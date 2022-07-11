@@ -4,7 +4,7 @@ library(corrplot)
 
 penguin_colours <- c("Chinstrap" = "#c45bcb", "Gentoo" = "#057076", "Adelie" = "#ff8000")
 island_colours <- c("Biscoe" = "#c45bcb", "Dream" = "#057076", "Torgersen" = "#ff8000")
-sex_colours <- c("Male" = "#c45bcb", "Female" = "#057076"
+sex_colours <- c("Male" = "#c45bcb", "Female" = "#057076")
 
 "Which island has the most penguins? Which island has the most Adelie penguins?"
 penguins %>%
