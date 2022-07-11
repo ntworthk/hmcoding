@@ -6,6 +6,12 @@ library(DT)
 ui <- fluidPage(
   mainPanel(
     tabsetPanel(
+        tabPanel("Intro",
+                 h3("Meet the penguis"),
+                 tags$img(width = 400, src = "https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png"),
+                 p("The three species of penguins we are looking at today are called Chinstrap, Gentoo and Adelie. They live on the islands of Biscoe, Dream and Torgersen. We have access to information about 344 different penguins, as shown below:"),
+                 dataTableOutput("displayData0")
+                 ),
       tabPanel("Exercise 1", 
                h3("Data (penguins): "),
                dataTableOutput("displayData"),
@@ -30,6 +36,8 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   shinyEnv <- environment() 
+  
+  output$displayData0 <- renderDataTable({ (penguins) })
   
   output$displayData <- renderDataTable({ (penguins) })
   codeInput <- reactive({ input$testcode })
