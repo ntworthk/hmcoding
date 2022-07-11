@@ -1,28 +1,50 @@
 library(shiny)
 library(tidyverse)
+library(palmerpenguins)
+library(DT)
 
 ui <- fluidPage(
   mainPanel(
-    h3("Data (mtcars): "), verbatimTextOutput("displayData"),
-    textAreaInput("testcode", "Try colouring the chart in different ways: ", 
-                  "ggplot(data = mtcars, aes(x = mpg, y = cyl)) +
-              geom_point(colour = 'red')", width="600px"), 
-    # h3("Results: "), verbatimTextOutput("codeResults"),
-    h3("Chart: "), plotOutput("codeResultsPlot"))
+    tabsetPanel(
+      tabPanel("Exercise 1", 
+               h3("Data (penguins): "),
+               dataTableOutput("displayData"),
+               textAreaInput("testcode", "Try colouring the chart in different ways: ", 
+                             "ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+              geom_point(colour = 'red', size = 3)", width="600px"), 
+              h3("Chart: "),
+              plotOutput("codeResultsPlot")
+      ),
+      tabPanel("Exercise 2",
+               h3("Data (penguins): "),
+               dataTableOutput("displayData2"),
+               h4("Try colouring the chart in different ways"),
+               textAreaInput("testcode2", "ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, colour = species)) +", 
+                             "geom_point(size = 3)", width="600px"), 
+              h3("Chart: "),
+              plotOutput("codeResultsPlot2")
+      )
+    )
+  )
 )
 
 server <- function(input, output) {
   shinyEnv <- environment() 
-  output$displayData <- renderPrint({ head(mtcars) })  # prepare head(mtcars) for display on the UI
   
-  # create codeInput variable to capture what the user entered; store results to codeResults
+  output$displayData <- renderDataTable({ (penguins) })
   codeInput <- reactive({ input$testcode })
-  # output$codeResults <- renderPrint({
-  #   eval(parse(text=codeInput()), envir=shinyEnv)
-  # })
   output$codeResultsPlot <- renderPlot({
     eval(parse(text=codeInput()), envir=shinyEnv)
   })
+
+  
+  output$displayData2 <- renderDataTable({ (penguins) })
+  codeInput2 <- reactive({ input$testcode2 })
+  output$codeResultsPlot2 <- renderPlot({
+    eval(parse(text=paste0("ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, colour = species)) + ", codeInput2())), envir=shinyEnv)
+  })
+  
+  
 }
 
 shinyApp(ui, server)
