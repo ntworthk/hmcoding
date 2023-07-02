@@ -40,7 +40,10 @@ penguins %>%
 
 "How heavy is the heaviest penguin? Which species is the heaviest?"
 penguins %>%
-  ggplot(aes(x = body_mass_g, y = flipper_length_mm , colour = species)) +
+  arrange(desc(body_mass_g))
+penguins %>%
+  ggplot(aes(x = species, y = body_mass_g, colour = species)) +
+  geom_boxplot() +
   geom_point() +
   scale_colour_manual(values = penguin_colours)
 
