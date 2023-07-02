@@ -1,19 +1,22 @@
 ---
-title: "README"
+title: "Meet the penguins"
 format: gfm
 ---
 
-# Meet the penguins
+The three species of penguins we are looking at today are called Chinstrap, Gentoo and Adelie. They live on the islands of Biscoe, Dream and Torgersen.
 
-The three species of penguins we are looking at today are called Chinstrap, Gentoo and Adelie. They live on the islands of Biscoe, Dream and Torgersen. We have access to information about 344 different penguins, as shown below:
+<img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png"  width="400">
+
+We have access to information about 344 different penguins. A small sample is shown below:
 
 ```{r}
 #| echo: false
 #| output: asis
+#| warning: false
+#| message: false
 library(palmerpenguins)
 library(knitr)
-library(dplyr)
-kable(slice_sample(penguins, n = 10))
+kable(dplyr::slice_sample(penguins, n = 10))
 
 ```
 
@@ -29,17 +32,3 @@ Here are some things we want to know about the penguins:
 - Anything else you want to find out!
 
 Work with your group to make a chart or a table answering your question.
-
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this 
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
