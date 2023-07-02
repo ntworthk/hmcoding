@@ -19,7 +19,7 @@ ui <- fluidPage(
                    tags$li("How heavy is the heaviest penguin? Which species is the heaviest?"),
                    tags$li("Anything else you want to find out!")
                  ),
-                 p("Work with your partner to make a chart or a table answering your question"),
+                 p("Work with your group to make a chart or a table answering your question"),
                  dataTableOutput("displayData0")
                  ),
       tabPanel("Exercise 1", 
