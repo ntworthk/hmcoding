@@ -33,7 +33,11 @@ taylor_album_songs <- taylor_album_songs |>
   select(album_name, track_number, track_name, album_release, critic_album_score, user_album_score, everything()) |> 
     mutate(loudness = loudness - min(loudness))
 
-kable(dplyr::slice_sample(taylor_album_songs, n = 10))
+sampl <- dplyr::slice_sample(taylor_album_songs, n = 10)
+
+kable(sampl)
+
+kable(glimpse(sampl))
 
 ```
 
