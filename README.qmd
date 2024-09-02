@@ -1,34 +1,54 @@
 ---
-title: "Meet the penguins"
+title: "Meet the songs"
 format: gfm
 ---
 
-The three species of penguins we are looking at today are called Chinstrap, Gentoo and Adelie. They live on the islands of Biscoe, Dream and Torgersen.
+We have been given a dataset about the songs and albums released by Taylor Swift.
 
-<img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png"  width="400">
+<img src="https://media.giphy.com/media/2tg4k9pXNcGi7kZ9Pz/giphy.gif"
+alt="GIF of Taylor saying “yes”" />
 
-We have access to information about 344 different penguins. A small sample is shown below:
+We have access to information about 240 songs on 11 albums.  A small sample is shown below:
 
 ```{r}
 #| echo: false
-#| output: asis
+#| output: true
 #| warning: false
 #| message: false
-library(palmerpenguins)
-library(knitr)
-kable(dplyr::slice_sample(penguins, n = 10))
+
+suppressPackageStartupMessages({
+  library(knitr)
+  library(dplyr)
+  library(readr)
+  library(taylor)
+})
+
+taylor_albums <- taylor_albums |> 
+  rename(critic_album_score = metacritic_score, user_album_score = user_score)
+
+taylor_album_songs <- taylor_album_songs |> 
+  left_join(taylor_albums, by = join_by(album_name, ep, album_release)) |> 
+  filter(!bonus_track) |> 
+  select(-lyrics, -ep, -bonus_track, -promotional_release) |> 
+  select(album_name, track_number, track_name, album_release, critic_album_score, user_album_score, everything()) |> 
+    mutate(loudness = loudness - min(loudness))
+
+kable(dplyr::slice_sample(taylor_album_songs, n = 10))
 
 ```
 
 # What do we want to find out?
 
-Here are some things we want to know about the penguins:
+Here are some things we want to know about Taylor Swift:
 
-- Which island has the most penguins? Which island has the most Adelie penguins?
-- Is there a relationship between bill length and bill depth? For example, do penguins with longer bills also have deeper bills?
-- Do female penguins have longer or shorter flippers than male penguins?
-- Which species of penguin has the longest flippers?
-- How heavy is the heaviest penguin? Which species is the heaviest?
+- Are albums with more or less songs more popular with critics?
+- Which album has the 'loudest' songs?
+- How long is the longest album? Which album has the longest songs?
+- Which album is the most 'danceable'?
+- Is there a relationship between 'acousticness' and 'energy'?
+- Is there a relationship between 'loudness' and 'energy'?
+- Are albums that are more 'danceable' more popular according to 'users'?
+- Are albums with more songs more popular according to 'users'?
 - Anything else you want to find out!
 
 Work with your group to make a chart or a table answering your question.
