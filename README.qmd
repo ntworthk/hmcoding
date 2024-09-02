@@ -5,8 +5,8 @@ format: gfm
 
 We have been given a dataset about the songs and albums released by Taylor Swift.
 
-<img src="https://media.giphy.com/media/2tg4k9pXNcGi7kZ9Pz/giphy.gif"
-alt="GIF of Taylor saying “yes”" />
+<img src="https://images.seattletimes.com/wp-content/uploads/2023/07/07222023_swift_213100.jpg?d=2040x1479"
+alt="Taylor" />
 
 We have access to information about 240 songs on 11 albums.  A small sample is shown below:
 
@@ -72,7 +72,7 @@ Here's some more information about the data we have been given:
 - `danceability` - how suitable the song is for dancing (out of 1)
 - `energy` - how 'intense' and 'active' the songs are (out of 1)
 - `key` - musical key of the song
-- `loudness` - overall loudness of the song
+- `loudness` - overall loudness of the song (higher is louder)
 - `mode` - is the song in a major or minor key? (0 is minor, 1 is major)
 - `speechiness` - is the song spoken word (close to 1) or does it have music (close to 0)
 - `acousticness` - is the track acoustic (1 is acoustic, 0 is not)
