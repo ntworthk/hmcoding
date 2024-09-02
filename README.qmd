@@ -1,34 +1,88 @@
 ---
-title: "Meet the penguins"
+title: "Meet the songs"
 format: gfm
 ---
 
-The three species of penguins we are looking at today are called Chinstrap, Gentoo and Adelie. They live on the islands of Biscoe, Dream and Torgersen.
+We have been given a dataset about the songs and albums released by Taylor Swift.
 
-<img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png"  width="400">
+<img src="https://images.seattletimes.com/wp-content/uploads/2023/07/07222023_swift_213100.jpg?d=2040x1479"
+alt="Taylor" />
 
-We have access to information about 344 different penguins. A small sample is shown below:
+We have access to information about 240 songs on 11 albums.  A small sample is shown below:
 
 ```{r}
 #| echo: false
-#| output: asis
+#| output: true
 #| warning: false
 #| message: false
-library(palmerpenguins)
-library(knitr)
-kable(dplyr::slice_sample(penguins, n = 10))
+
+suppressPackageStartupMessages({
+  library(knitr)
+  library(dplyr)
+  library(readr)
+  library(taylor)
+})
+
+taylor_albums <- taylor_albums |> 
+  rename(critic_album_score = metacritic_score, user_album_score = user_score)
+
+taylor_album_songs <- taylor_album_songs |> 
+  left_join(taylor_albums, by = join_by(album_name, ep, album_release)) |> 
+  filter(!bonus_track) |> 
+  select(-lyrics, -ep, -bonus_track, -promotional_release) |> 
+  select(album_name, track_number, track_name, album_release, critic_album_score, user_album_score, everything()) |> 
+    mutate(loudness = loudness - min(loudness))
+
+sampl <- dplyr::slice_sample(taylor_album_songs, n = 10)
+
+kable(glimpse(sampl))
 
 ```
 
 # What do we want to find out?
 
-Here are some things we want to know about the penguins:
+Here are some things we want to know about Taylor Swift:
 
-- Which island has the most penguins? Which island has the most Adelie penguins?
-- Is there a relationship between bill length and bill depth? For example, do penguins with longer bills also have deeper bills?
-- Do female penguins have longer or shorter flippers than male penguins?
-- Which species of penguin has the longest flippers?
-- How heavy is the heaviest penguin? Which species is the heaviest?
+- Are albums with more or less songs more popular with critics?
+- Which album has the 'loudest' songs?
+- How long is the longest album? Which album has the longest songs?
+- Which album is the most 'danceable'?
+- Is there a relationship between 'acousticness' and 'energy'?
+- Is there a relationship between 'loudness' and 'energy'?
+- Are albums that are more 'danceable' more popular according to 'users'?
+- Are albums with more songs more popular according to 'users'?
 - Anything else you want to find out!
 
 Work with your group to make a chart or a table answering your question.
+
+# What do all of the columns mean?
+
+Here's some more information about the data we have been given:
+
+- `album_name` - the name of the album
+- `track_number` - the number of the song
+- `track_name` - the name of the song
+- `album_release` - date the album was released
+- `critic_album_score` - score for the album by critics (out of 100)
+- `user_album_score` - score for the album by listeners (out of 10)
+- `artist` - artist (this is always Taylor Swift!)
+- `featuring` - any other artists that featured
+- `single_release` - if the song was released as a single, the date it was released
+- `track_release` - usually the same as the album date
+- `danceability` - how suitable the song is for dancing (out of 1)
+- `energy` - how 'intense' and 'active' the songs are (out of 1)
+- `key` - musical key of the song
+- `loudness` - overall loudness of the song (higher is louder)
+- `mode` - is the song in a major or minor key? (0 is minor, 1 is major)
+- `speechiness` - is the song spoken word (close to 1) or does it have music (close to 0)
+- `acousticness` - is the track acoustic (1 is acoustic, 0 is not)
+- `instrumentalness` - does the track contain vocals? (0 for vocals, 1 for instrumental only)
+- `liveness` - is there an audience in the recording? (out of 1)
+- `valence` - is the track happy (1) or sad (0)?
+- `tempo` - how fast is the song in beats per minute?
+- `time_signature` - what is the time signature of the song (eg, 3 means '3/4' time)
+- `duration_ms` - how long is the song in milliseconds (1000ms is 1 second)
+- `explicit` - is the song 'explicit'?
+- `key_name` - what is the name (letter) of the key?
+- `mode_name` - what is the name of the mode (minor or major)
+- `key_mode` - this is the key and the mode together (eg, C minor)
